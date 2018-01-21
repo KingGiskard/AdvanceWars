@@ -1,0 +1,18 @@
+using UnityEngine;
+using System.Collections;
+
+public class GridUpdate : MonoBehaviour {
+public Grid grid;
+
+void Start(){
+grid = this.GetComponent<Grid>
+}
+
+
+void gridUpdate(){
+  foreach(Node n in grid ){
+     n.walkable = !(Physics.CheckSphere(n.worldPoint, grid.nodeRadius, grid.unwalkableMask));
+  }
+}
+
+}

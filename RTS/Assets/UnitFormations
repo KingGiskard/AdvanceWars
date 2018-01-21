@@ -1,0 +1,26 @@
+using UnityEngine;
+using System.Collections;
+
+public class UnitFormations : MonoBehaviour
+{
+public UnitControl unitControl;
+  vector2[] grid;
+
+void Start(){
+ GameObject player = GameObject.FindGameObjectWithTag("Player");
+ unitControl = player.GetComponent<UnitControl>;
+}
+
+public void getFormation(){
+    length = Mathf.CeilToInt(Mathf.Sqrt(unitControl.unitsActive.Count));
+    grid = new Vector2[length^2];
+    int i = 0;
+    for(int x = 0; x < length; x++){
+      for(int y = 0; y < length; y++){
+      grid[i] = new Vector2(x, y);
+      unitsActive[i].targetOffset = grid[i];
+      i++;
+      }
+    }
+  }
+}
