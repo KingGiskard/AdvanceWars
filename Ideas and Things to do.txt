@@ -1,0 +1,45 @@
+Things To Do
+	Units
+      >Pathfinding
+      >Formations
+      >Attacking
+      >Indivisual statistics
+      >Multiple unit types
+      >Queueing actions
+			>Grouping
+        
+    Camera Movement
+      >Fluid Movement
+      >Mouse position based movement
+      >Collision detection
+        
+    Buildings
+      >Construction
+	 	  >Collision
+      >Usability
+      >Destruction
+      >Progression through technology
+        
+    World
+      >Resorces
+      >Terrain (Pre-made or random)
+      >Fog of war/Exploration
+      >Minimap/World map
+      >UI
+        
+    Enemies
+    	>yeah... RIP
+    
+Cool Ideas
+	World Memory
+    	>World remembers past playthroughs
+			>Past playthrough's achievements become ruins
+        
+    Terrain Based Architecture
+    	>Architectural styles based on terrain
+       
+	Realistic Player Progression
+    	>Player progression mimics human devolopement
+        >From nomadic bands fighting for survival to international war
+    
+    
