@@ -21,6 +21,10 @@ public class MouseControls : MonoBehaviour {
             {
                 print(hit.collider.gameObject.name);
             }
+            else if (hit.collider.gameObject.tag == "Ground")
+            {
+                print(hit.collider.gameObject.transform.position);                
+            }
         }
 	}
 }
