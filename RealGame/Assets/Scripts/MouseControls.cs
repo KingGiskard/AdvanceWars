@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseControls : MonoBehaviour {
+public class MouseControls : MonoBehaviour
+{
+    GridBase gridBase;
 
     public Camera mainCam;
 
-	void Start ()
-    {
-		
-	}
+    private Node tempStart = null;
+    private Node tempEnd = null;
+
+    private GameObject selectedUnit = null;
+
 	void Update ()
     {
         if (Input.GetMouseButtonDown(0))
@@ -19,11 +22,22 @@ public class MouseControls : MonoBehaviour {
             Physics.Raycast(ray, out hit);
             if (hit.collider.gameObject.tag == "Unit")
             {
-                print(hit.collider.gameObject.name);
+                gridBase = GridBase.GetInstance();
+                tempStart = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
+                selectedUnit = hit.collider.gameObject;
             }
             else if (hit.collider.gameObject.tag == "Ground")
             {
-                print(hit.collider.gameObject.transform.position);                
+                gridBase = GridBase.GetInstance();
+                if (tempStart != null)
+                {
+                    tempEnd = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
+                    selectedUnit.GetComponent<UnitMovement>().GetPath(tempStart, tempEnd);
+
+                    selectedUnit = null;
+                    tempStart = null;
+                    tempEnd = null;
+                }                
             }
         }
 	}
