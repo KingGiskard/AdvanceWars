@@ -11,7 +11,7 @@ public class UnitMovement : MonoBehaviour
     private List<Node> p;
 
     private Vector3 curPos = Vector3.zero;
-    private Vector3 moveAmount = Vector3.zero;
+    private float moveAmount = 0;
 
 	void Start ()
     {
@@ -21,23 +21,25 @@ public class UnitMovement : MonoBehaviour
     private void Update()
     {
         if (p != null && p.Count > 0)
+
         {
             if (curPos == Vector3.zero)
             {
                 curPos = gameObject.transform.position;
             }
-            if (moveAmount == Vector3.zero)
+            if (moveAmount == 0)
             {
-                moveAmount = new Vector3(p[0].x - curPos.x, 0, p[0].z - curPos.z) * Time.deltaTime * moveSpd;
+                gameObject.transform.LookAt(new Vector3(p[0].x, transform.position.y, p[0].z));
+                moveAmount = Vector3.Distance(curPos, new Vector3(p[0].x, transform.position.y, p[0].z)) * Time.deltaTime * moveSpd;
             }
             if (Vector2.Distance(new Vector2(gameObject.transform.position.x, gameObject.transform.position.z), new Vector2(p[0].x, p[0].z)) > 0.1f)
             {
-                gameObject.transform.Translate(moveAmount);
+                gameObject.transform.Translate(Vector3.forward * moveAmount);
             }
             else
             {
                 curPos = Vector3.zero;
-                moveAmount = Vector3.zero;
+                moveAmount = 0;
                 p.RemoveAt(0);
             }
         }

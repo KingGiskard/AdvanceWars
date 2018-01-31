@@ -37,7 +37,7 @@ public class GridBase : MonoBehaviour
                     float zPos = k * zOffset;
 
                     GameObject gridObj = Instantiate(gridFloorPrefab, new Vector3(xPos, yPos, zPos), Quaternion.identity) as GameObject;
-                    if (((i * k) + k) % 2 == 1)
+                    if (((i * xMax) + k) % 2 == 1)
                     {
                         gridObj.GetComponent<Renderer>().material = floorMat1;
                     }
