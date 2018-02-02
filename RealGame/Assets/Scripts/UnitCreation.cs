@@ -4,28 +4,42 @@ using UnityEngine;
 
 public class UnitCreation : MonoBehaviour
 {
-    public int redUnits;
-    public int blueUnits;
-
-    public GameObject redTank;
-    public GameObject blueTank;
-
     GridBase gridBase;
+    UnitList unitList;
 
 	void Start ()
     {
         gridBase = GridBase.GetInstance();
-        for (int i = 0; i < redUnits; i++)
+        unitList = UnitList.GetInstance();
+    }
+
+    public void CreateUnit(string unitName, Vector2 pos, string team)
+    {
+        for (int i = 0; i < unitList.units.Count; i++)
         {
-            int tempX = Random.Range(0, gridBase.xMax);
-            int tempY = Random.Range(0, gridBase.yMax);
-            Instantiate(redTank, new Vector3(tempX, 0.0f, tempY), Quaternion.identity);
+            if (unitList.units[i].unitName == unitName)
+            {
+                Node tempNode = gridBase.GetNodeFromVector2(pos);
+                Vector3 tempPos = new Vector3(tempNode.x, tempNode.y, tempNode.z);
+                GameObject tempUnit = Instantiate(unitList.units[i].uModel, tempPos, Quaternion.identity) as GameObject;
+                tempUnit.name = unitList.units[i].unitName;
+                tempUnit.GetComponent<UnitBehavior>().team = team;
+            }
         }
-        for (int i = 0; i < blueUnits; i++)
+    }
+
+    public void CreateUnit(int unitID, Vector2 pos, string team)
+    {
+        for (int i = 0; i < unitList.units.Count; i++)
         {
-            int tempX = Random.Range(0, gridBase.xMax);
-            int tempY = Random.Range(0, gridBase.yMax);
-            Instantiate(blueTank, new Vector3(tempX, 0.0f, tempY), Quaternion.identity);
+            if (unitList.units[i].unitID == unitID)
+            {
+                Node tempNode = gridBase.GetNodeFromVector2(pos);
+                Vector3 tempPos = new Vector3(tempNode.x, tempNode.y, tempNode.z);
+                GameObject tempUnit = Instantiate(unitList.units[i].uModel, tempPos, Quaternion.identity) as GameObject;
+                tempUnit.name = unitList.units[i].unitName;
+                tempUnit.GetComponent<UnitBehavior>().team = team;
+            }
         }
     }
 }

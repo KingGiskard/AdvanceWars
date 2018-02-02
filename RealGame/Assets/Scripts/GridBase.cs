@@ -95,6 +95,16 @@ public class GridBase : MonoBehaviour
         return gotVal;
     }
 
+    public Node GetNodeFromVector2(Vector2 pos)
+    {
+        int x = Mathf.RoundToInt(pos.x);
+        int y = 0;
+        int z = Mathf.RoundToInt(pos.y);
+
+        Node gotVal = GetNode(x, y, z);
+        return gotVal;
+    }
+
     public static GridBase instance;
     public static GridBase GetInstance()
     {

@@ -22,9 +22,20 @@ public class MouseControls : MonoBehaviour
             Physics.Raycast(ray, out hit);
             if (hit.collider.gameObject.tag == "Unit")
             {
-                gridBase = GridBase.GetInstance();
-                tempStart = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
-                selectedUnit = hit.collider.gameObject;
+                if (selectedUnit == null)
+                {
+                    gridBase = GridBase.GetInstance();
+                    tempStart = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
+                    selectedUnit = hit.collider.gameObject;
+                }
+                else if (selectedUnit != null)
+                {
+                    selectedUnit.GetComponent<UnitBehavior>().TryAttack(hit.collider.gameObject);
+
+                    selectedUnit = null;
+                    tempStart = null;
+                    tempEnd = null;
+                }       
             }
             else if (hit.collider.gameObject.tag == "Ground")
             {
@@ -32,12 +43,18 @@ public class MouseControls : MonoBehaviour
                 if (tempStart != null)
                 {
                     tempEnd = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
-                    selectedUnit.GetComponent<UnitMovement>().GetPath(tempStart, tempEnd);
+                    selectedUnit.GetComponent<UnitBehavior>().TryMove(tempStart, tempEnd);
 
                     selectedUnit = null;
                     tempStart = null;
                     tempEnd = null;
                 }                
+            }
+            else
+            {
+                selectedUnit = null;
+                tempStart = null;
+                tempEnd = null;
             }
         }
 	}
