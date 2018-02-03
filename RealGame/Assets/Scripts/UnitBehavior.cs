@@ -8,12 +8,15 @@ public class UnitBehavior : MonoBehaviour
     UnitList units;
     UnitOutline unit;
     GridBase grid;
+    TeamsManage teams;
 
     public float moveSpd;
 
-    public string team;
+    public int movesLeft = 0;
+    public int atksLeft = 0;
 
-    private int localHP;
+    private int localMaxHP;
+    private int localCurHP;
 
     private List<Node> p;
 
@@ -25,6 +28,7 @@ public class UnitBehavior : MonoBehaviour
         path = new Pathfinder();
         units = UnitList.GetInstance();
         grid = GridBase.GetInstance();
+        teams = TeamsManage.GetInstance();
 
         for (int i = 0; i < units.units.Count; i++)
         {
@@ -34,7 +38,8 @@ public class UnitBehavior : MonoBehaviour
             }
         }
 
-        localHP = unit.uHealth;
+        localMaxHP = unit.uHealth;
+        localCurHP = unit.uHealth;
 	}
 
     private void Update()
@@ -66,41 +71,71 @@ public class UnitBehavior : MonoBehaviour
 
     public void TryMove(Node start, Node end)
     {
-        path.startPos = start;
-        path.endPos = end;
-
-        if (path.FindPath().Count <= unit.uMoveRange)
+        if (movesLeft <= 0)
         {
-            GetPath(start, end);
+            print("No Moves Left");
         }
         else
         {
-            print("Too Far! Max Range: " + unit.uMoveRange + " You Tried: " + path.FindPath().Count);
-        }
+            path.startPos = start;
+            path.endPos = end;
+
+            if (path.FindPath().Count <= unit.uMoveRange)
+            {
+                GetPath(start, end);
+                movesLeft -= 1;
+            }
+            else
+            {
+                print("Too Far! Max Range: " + unit.uMoveRange + " You Tried: " + path.FindPath().Count);
+            }
+        }    
     }
 
     public void TryAttack(GameObject otherUnit)
     {
-        path.startPos = grid.GetNodeFromVector3(gameObject.transform.position);
-        path.endPos = grid.GetNodeFromVector3(otherUnit.transform.position);
-
-        if (path.FindPath().Count >= unit.uAtkRangeMin && path.FindPath().Count <= unit.uAtkRangeMax)
+        if (atksLeft <= 0)
         {
-            gameObject.transform.LookAt(otherUnit.transform.position);
-            otherUnit.GetComponent<UnitBehavior>().TakeDamage(unit.uAtkDmg);
-            print(unit.unitName + " Did " + unit.uAtkDmg + " Damage To " + otherUnit.name);
+            print("No Attacks Left");
         }
         else
         {
-            print("Not In Range! Range Is " + unit.uAtkRangeMin + " To " + unit.uAtkRangeMax);
-        }
+            path.startPos = grid.GetNodeFromVector3(gameObject.transform.position);
+            path.endPos = grid.GetNodeFromVector3(otherUnit.transform.position);
+
+            if (path.FindPath().Count >= unit.uAtkRangeMin && path.FindPath().Count <= unit.uAtkRangeMax)
+            {
+                gameObject.transform.LookAt(otherUnit.transform.position);
+                otherUnit.GetComponent<UnitBehavior>().TakeDamage(unit.uAtkDmg);
+                print(unit.unitName + " Did " + unit.uAtkDmg + " Damage To " + otherUnit.name);
+                atksLeft -= 1;
+            }
+            else
+            {
+                print("Not In Range! Range Is " + unit.uAtkRangeMin + " To " + unit.uAtkRangeMax);
+            }
+        }       
     }
 
     public void TakeDamage(int dmg)
     {
-        localHP -= dmg;
-        if (localHP <= 0)
+        localCurHP -= dmg;
+        if (localCurHP <= 0)
         {
+            for (int i = 0; i < teams.redTeam.Count; i++)
+            {
+                if (teams.redTeam[i] == gameObject)
+                {
+                    teams.redTeam.RemoveAt(i);
+                }
+            }
+            for (int i = 0; i < teams.blueTeam.Count; i++)
+            {
+                if (teams.blueTeam[i] == gameObject)
+                {
+                    teams.blueTeam.RemoveAt(i);
+                }
+            }
             Destroy(this.gameObject);
         }
     }

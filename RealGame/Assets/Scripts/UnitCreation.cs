@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class UnitCreation : MonoBehaviour
 {
+    public static UnitCreation instance;
+
+    public Material redMat;
+    public Material blueMat;
+
     GridBase gridBase;
     UnitList unitList;
+    TeamsManage teamMng;
 
 	void Start ()
     {
         gridBase = GridBase.GetInstance();
         unitList = UnitList.GetInstance();
+        teamMng = TeamsManage.GetInstance();
     }
 
     public void CreateUnit(string unitName, Vector2 pos, string team)
@@ -23,7 +30,16 @@ public class UnitCreation : MonoBehaviour
                 Vector3 tempPos = new Vector3(tempNode.x, tempNode.y, tempNode.z);
                 GameObject tempUnit = Instantiate(unitList.units[i].uModel, tempPos, Quaternion.identity) as GameObject;
                 tempUnit.name = unitList.units[i].unitName;
-                tempUnit.GetComponent<UnitBehavior>().team = team;
+                if (team == "Red")
+                {
+                    tempUnit.GetComponent<Renderer>().material = redMat;
+                    teamMng.redTeam.Add(tempUnit);
+                }
+                else
+                {
+                    tempUnit.GetComponent<Renderer>().material = blueMat;
+                    teamMng.blueTeam.Add(tempUnit);
+                }
             }
         }
     }
@@ -38,8 +54,26 @@ public class UnitCreation : MonoBehaviour
                 Vector3 tempPos = new Vector3(tempNode.x, tempNode.y, tempNode.z);
                 GameObject tempUnit = Instantiate(unitList.units[i].uModel, tempPos, Quaternion.identity) as GameObject;
                 tempUnit.name = unitList.units[i].unitName;
-                tempUnit.GetComponent<UnitBehavior>().team = team;
+                if (team == "Red")
+                {
+                    tempUnit.GetComponent<Renderer>().material = redMat;
+                    teamMng.redTeam.Add(tempUnit);
+                }
+                else
+                {
+                    tempUnit.GetComponent<Renderer>().material = blueMat;
+                    teamMng.blueTeam.Add(tempUnit);
+                }
             }
         }
+    }
+    public static UnitCreation GetInstance()
+    {
+        return instance;
+    }
+
+    void Awake()
+    {
+        instance = this;
     }
 }

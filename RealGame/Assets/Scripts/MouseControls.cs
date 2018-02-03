@@ -20,42 +20,45 @@ public class MouseControls : MonoBehaviour
             Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             Physics.Raycast(ray, out hit);
-            if (hit.collider.gameObject.tag == "Unit")
+            if (hit.collider != null)
             {
-                if (selectedUnit == null)
+                if (hit.collider.gameObject.tag == "Unit")
+                {
+                    if (selectedUnit == null)
+                    {
+                        gridBase = GridBase.GetInstance();
+                        tempStart = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
+                        selectedUnit = hit.collider.gameObject;
+                    }
+                    else if (selectedUnit != null)
+                    {
+                        selectedUnit.GetComponent<UnitBehavior>().TryAttack(hit.collider.gameObject);
+
+                        selectedUnit = null;
+                        tempStart = null;
+                        tempEnd = null;
+                    }
+                }
+                else if (hit.collider.gameObject.tag == "Ground")
                 {
                     gridBase = GridBase.GetInstance();
-                    tempStart = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
-                    selectedUnit = hit.collider.gameObject;
+                    if (tempStart != null)
+                    {
+                        tempEnd = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
+                        selectedUnit.GetComponent<UnitBehavior>().TryMove(tempStart, tempEnd);
+
+                        selectedUnit = null;
+                        tempStart = null;
+                        tempEnd = null;
+                    }
                 }
-                else if (selectedUnit != null)
-                {
-                    selectedUnit.GetComponent<UnitBehavior>().TryAttack(hit.collider.gameObject);
-
-                    selectedUnit = null;
-                    tempStart = null;
-                    tempEnd = null;
-                }       
-            }
-            else if (hit.collider.gameObject.tag == "Ground")
-            {
-                gridBase = GridBase.GetInstance();
-                if (tempStart != null)
-                {
-                    tempEnd = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
-                    selectedUnit.GetComponent<UnitBehavior>().TryMove(tempStart, tempEnd);
-
-                    selectedUnit = null;
-                    tempStart = null;
-                    tempEnd = null;
-                }                
             }
             else
             {
                 selectedUnit = null;
                 tempStart = null;
                 tempEnd = null;
-            }
+            }           
         }
 	}
 }

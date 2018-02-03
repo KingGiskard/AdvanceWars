@@ -75,11 +75,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GameFrame.cs" />
     <Compile Include="Assets\Scripts\GridBase.cs" />
     <Compile Include="Assets\Scripts\KeyboardTest.cs" />
     <Compile Include="Assets\Scripts\MouseControls.cs" />
     <Compile Include="Assets\Scripts\Node.cs" />
     <Compile Include="Assets\Scripts\Pathfinder.cs" />
+    <Compile Include="Assets\Scripts\TeamsManage.cs" />
     <Compile Include="Assets\Scripts\UnitBehavior.cs" />
     <Compile Include="Assets\Scripts\UnitCreation.cs" />
     <Compile Include="Assets\Scripts\UnitList.cs" />
