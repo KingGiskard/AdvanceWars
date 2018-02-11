@@ -79,7 +79,13 @@ public class Player : MonoBehaviour
                 selected_unit = null;
             }
         }
-        //select unit
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (selected_tile != null)
+            {
+                game_controller.CreateUnit(selected_tile, player_id, "capitol");
+            }
+        }
 
         //move unit
 

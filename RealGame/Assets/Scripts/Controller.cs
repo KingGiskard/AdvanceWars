@@ -11,15 +11,17 @@ public class Controller : MonoBehaviour {
     private Material grid_mat_2;
 
     private GameObject tile_game_object;
+    private GameObject player_game_object;
 
     HashSet<Player> players;
 
-    public void initialize(Dictionary<int, string> _players, GameObject player_game_object)
+    public void initialize(Dictionary<int, string> _players)
     {
         //load resources
         grid_mat_1 = Resources.Load<Material>("Materials/Blue");
         grid_mat_2 = Resources.Load<Material>("Materials/Red");
-        tile_game_object = Resources.Load<GameObject>("GridFloor");
+        tile_game_object = Resources.Load<GameObject>("Prefabs/GridFloor");
+        player_game_object = Resources.Load<GameObject>("Prefabs/Player");
 
         //create the board
         map = new GridBase(13, 13);
@@ -59,4 +61,10 @@ public class Controller : MonoBehaviour {
         //increment game counter
         
 	}
+
+    public void CreateUnit(Node place_to_make, int player_id, string unit_type)
+    {
+        //create unit for player of type unit_type at place_to_make
+    } 
+
 }
