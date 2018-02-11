@@ -4,23 +4,25 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour {
 
-    private GridBase map;
+    public GridBase map;
     private int turnCounter;
 
     private Material grid_mat_1;
     private Material grid_mat_2;
 
+    private GameObject tile_game_object;
+
     HashSet<Player> players;
 
-    public void initialize(Dictionary<int, string> _players, GameObject tile_game_object, GameObject player_game_object)
+    public void initialize(Dictionary<int, string> _players, GameObject player_game_object)
     {
-        //create the board
-        map = new GridBase(13, 13);
-
-        //load material resources
+        //load resources
         grid_mat_1 = Resources.Load<Material>("Materials/Blue");
         grid_mat_2 = Resources.Load<Material>("Materials/Red");
+        tile_game_object = Resources.Load<GameObject>("GridFloor");
 
+        //create the board
+        map = new GridBase(13, 13);
 
         //give each node a gameobject
         foreach (Node node in map.grid)
@@ -44,20 +46,17 @@ public class Controller : MonoBehaviour {
         players = new HashSet<Player>();
         foreach(int player_id in  _players.Keys)
         {
-
             GameObject player = GameObject.Instantiate(player_game_object, new Vector3(6,13,6), Quaternion.Euler(90,0,0));
             player.GetComponent<Player>().initialize(player_id, _players[player_id], this);
             players.Add(player.GetComponent<Player>());
         }
-
     }
-    
-	
+    	
 	// Update is called once per frame
 	void Update () {
 
         //update the board
         //increment game counter
-		
+        
 	}
 }
