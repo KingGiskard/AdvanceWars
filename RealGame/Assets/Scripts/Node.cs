@@ -11,7 +11,6 @@ public class Node
     public bool isWalkable = true;
 
     public int x;
-    public int y;
     public int z;
 
     public float hCost;

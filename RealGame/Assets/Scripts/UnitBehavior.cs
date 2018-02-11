@@ -27,7 +27,6 @@ public class UnitBehavior : MonoBehaviour
     {
         path = new Pathfinder();
         units = UnitList.GetInstance();
-        grid = GridBase.GetInstance();
         teams = TeamsManage.GetInstance();
 
         for (int i = 0; i < units.units.Count; i++)

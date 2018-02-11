@@ -26,7 +26,6 @@ public class MouseControls : MonoBehaviour
                 {
                     if (selectedUnit == null)
                     {
-                        gridBase = GridBase.GetInstance();
                         tempStart = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);
                         selectedUnit = hit.collider.gameObject;
                     }
@@ -41,7 +40,6 @@ public class MouseControls : MonoBehaviour
                 }
                 else if (hit.collider.gameObject.tag == "Ground")
                 {
-                    gridBase = GridBase.GetInstance();
                     if (tempStart != null)
                     {
                         tempEnd = gridBase.GetNodeFromVector3(hit.collider.gameObject.transform.position);

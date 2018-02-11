@@ -15,7 +15,6 @@ public class UnitCreation : MonoBehaviour
 
 	void Start ()
     {
-        gridBase = GridBase.GetInstance();
         unitList = UnitList.GetInstance();
         teamMng = TeamsManage.GetInstance();
     }
@@ -27,7 +26,7 @@ public class UnitCreation : MonoBehaviour
             if (unitList.units[i].unitName == unitName)
             {
                 Node tempNode = gridBase.GetNodeFromVector2(pos);
-                Vector3 tempPos = new Vector3(tempNode.x, tempNode.y, tempNode.z);
+                Vector3 tempPos = new Vector3(tempNode.x, tempNode.z);
                 GameObject tempUnit = Instantiate(unitList.units[i].uModel, tempPos, Quaternion.identity) as GameObject;
                 tempUnit.name = unitList.units[i].unitName;
                 if (team == "Red")
@@ -51,7 +50,7 @@ public class UnitCreation : MonoBehaviour
             if (unitList.units[i].unitID == unitID)
             {
                 Node tempNode = gridBase.GetNodeFromVector2(pos);
-                Vector3 tempPos = new Vector3(tempNode.x, tempNode.y, tempNode.z);
+                Vector3 tempPos = new Vector3(tempNode.x, tempNode.z);
                 GameObject tempUnit = Instantiate(unitList.units[i].uModel, tempPos, Quaternion.identity) as GameObject;
                 tempUnit.name = unitList.units[i].unitName;
                 if (team == "Red")

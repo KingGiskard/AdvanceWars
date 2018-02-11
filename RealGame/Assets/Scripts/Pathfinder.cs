@@ -10,8 +10,6 @@ public class Pathfinder
 
     public List<Node> FindPath()
     {
-        gridBase = GridBase.GetInstance();
-
         return FindActualPath(startPos, endPos);
     }
 
@@ -102,10 +100,9 @@ public class Pathfinder
                 Node searchPos = new Node();
 
                 searchPos.x = node.x + x;
-                searchPos.y = node.y;
                 searchPos.z = node.z;
 
-                Node newNode = GetNeighborNode(searchPos, true, node);
+                Node newNode = GetNeighborNode(searchPos, node);
 
                 if (newNode != null)
                 {
@@ -124,10 +121,9 @@ public class Pathfinder
                 Node searchPos = new Node();
 
                 searchPos.x = node.x;
-                searchPos.y = node.y;
                 searchPos.z = node.z + z;
 
-                Node newNode = GetNeighborNode(searchPos, true, node);
+                Node newNode = GetNeighborNode(searchPos, node);
 
                 if (newNode != null)
                 {
@@ -138,38 +134,15 @@ public class Pathfinder
         return gotList;
     }
 
-    private Node GetNeighborNode(Node adjPos, bool searchTopDown, Node curNodePos)
+    private Node GetNeighborNode(Node adjPos, Node curNodePos)
     {
         Node gotVal = null;
 
-        Node node = gridBase.GetNode(adjPos.x, adjPos.y, adjPos.z);
+        Node node = gridBase.GetNode(adjPos.x, adjPos.z);
 
         if (node != null && node.isWalkable)
         {
             gotVal = node;
-        }
-        else if (searchTopDown)
-        {
-            adjPos.y -= 1;
-            Node bottomBlock = gridBase.GetNode(adjPos.x, adjPos.y, adjPos.z);
-
-            if (bottomBlock != null && bottomBlock.isWalkable)
-            {
-                gotVal = bottomBlock;
-            }
-            else
-            {
-                adjPos.y += 2;
-                Node topBlock = gridBase.GetNode(adjPos.x, adjPos.y, adjPos.z);
-                if (topBlock != null && topBlock.isWalkable)
-                {
-                    gotVal = topBlock;
-                }
-            }
-        }
-        if (gotVal != null)
-        {
-
         }
         return gotVal;
     }
@@ -177,13 +150,12 @@ public class Pathfinder
     private int GetDistance(Node pos1, Node pos2)
     {
         int xDist = Mathf.Abs(pos1.x - pos2.x);
-        int yDist = Mathf.Abs(pos1.y - pos2.y);
         int zDist = Mathf.Abs(pos1.z - pos2.z);
 
         if (xDist > zDist)
         {
-            return 14 * zDist + 10 * (xDist - zDist) + 10 * yDist;
+            return 14 * zDist + 10 * (xDist - zDist);
         }
-        return 14 * xDist + 10 * (zDist - xDist) + 10 * yDist;
+        return 14 * xDist + 10 * (zDist - xDist);
     }
 }
