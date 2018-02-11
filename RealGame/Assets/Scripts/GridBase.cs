@@ -22,6 +22,13 @@ public class GridBase : MonoBehaviour
     public Vector3 startNodePos;
     public Vector3 endNodePos;
 
+    public void initialize(int _x_max, int _y_max, int _z_max)
+    {
+        xMax = _x_max;
+        yMax = _y_max;
+        zMax = _z_max;
+    }
+
     private void Start()
     {
         grid = new Node[xMax, yMax, zMax];
