@@ -76,17 +76,14 @@ public class UnitBehavior : MonoBehaviour
         }
         else
         {
-            path.startPos = start;
-            path.endPos = end;
-
-            if (path.FindPath().Count <= unit.uMoveRange)
+            if (path.FindPath(start, end).Count <= unit.uMoveRange)
             {
                 GetPath(start, end);
                 movesLeft -= 1;
             }
             else
             {
-                print("Too Far! Max Range: " + unit.uMoveRange + " You Tried: " + path.FindPath().Count);
+                print("Too Far! Max Range: " + unit.uMoveRange + " You Tried: " + path.FindPath(start, end).Count);
             }
         }    
     }
@@ -99,10 +96,10 @@ public class UnitBehavior : MonoBehaviour
         }
         else
         {
-            path.startPos = grid.GetNodeFromVector3(gameObject.transform.position);
-            path.endPos = grid.GetNodeFromVector3(otherUnit.transform.position);
+            Node start = grid.GetNodeFromVector3(gameObject.transform.position);
+            Node end = grid.GetNodeFromVector3(otherUnit.transform.position);
 
-            if (path.FindPath().Count >= unit.uAtkRangeMin && path.FindPath().Count <= unit.uAtkRangeMax)
+            if (path.FindPath(start, end).Count >= unit.uAtkRangeMin && path.FindPath(start, end).Count <= unit.uAtkRangeMax)
             {
                 gameObject.transform.LookAt(otherUnit.transform.position);
                 otherUnit.GetComponent<UnitBehavior>().TakeDamage(unit.uAtkDmg);
@@ -141,9 +138,6 @@ public class UnitBehavior : MonoBehaviour
 
 	public void GetPath(Node start, Node end)
     {
-        path.startPos = start;
-        path.endPos = end;
-
-        p = path.FindPath();
+        p = path.FindPath(start, end);
     }
 }

@@ -43,6 +43,11 @@ class CombatUnit : Unit
 
     }
 
+    public void move(Node[] path)
+    {
+        //move this object along the path
+    }
+
 
 
 

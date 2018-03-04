@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
 
     private int player_id;
@@ -14,6 +15,10 @@ public class Player : MonoBehaviour
 
     private GameObject selected_unit;
     private Node selected_tile;
+
+    private float horizontal_spd;
+    private float vertical_spd;
+    private float move_spd = 10.0f;
 
     Dictionary<string, HashSet<Unit>> player_units;
 
@@ -35,6 +40,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = player_camera.ScreenPointToRay(Input.mousePosition);
@@ -57,6 +67,7 @@ public class Player : MonoBehaviour
                 selected_unit = null;
             }
         }
+
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = player_camera.ScreenPointToRay(Input.mousePosition);
@@ -79,13 +90,11 @@ public class Player : MonoBehaviour
                 selected_unit = null;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (selected_tile != null)
-            {
-                game_controller.CreateUnit(selected_tile, player_id, "capitol");
-            }
-        }
+
+        horizontal_spd = Input.GetAxis("Horizontal") * Time.deltaTime * move_spd;
+        vertical_spd = Input.GetAxis("Vertical") * Time.deltaTime * move_spd;
+
+        transform.Translate(horizontal_spd, vertical_spd, 0);
 
         //move unit
 

@@ -5,15 +5,8 @@ using UnityEngine;
 public class Pathfinder
 {
     GridBase gridBase;
-    public Node startPos;
-    public Node endPos;
 
-    public List<Node> FindPath()
-    {
-        return FindActualPath(startPos, endPos);
-    }
-
-    public List<Node> FindActualPath(Node start, Node end)
+    public List<Node> FindPath(Node start, Node end)
     {
         List<Node> foundPath = new List<Node>();
 
