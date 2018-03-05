@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/OfflineScene.unity
+- path: Assets/OnlineScene.unity
   isLoaded: 1
   isActive: 1

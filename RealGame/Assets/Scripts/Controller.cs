@@ -15,7 +15,9 @@ public class Controller : MonoBehaviour {
     private GameObject red_tile_object;
     private GameObject player_game_object;
 
-    HashSet<Player> players;
+    private GameObject tank_object;
+
+    private Dictionary<int,Player> players;
 
     public void initialize(Dictionary<NetworkClient, string> _players)
     {
@@ -23,6 +25,7 @@ public class Controller : MonoBehaviour {
         blue_tile_object = Resources.Load<GameObject>("Prefabs/GridFloorBlue");
         red_tile_object = Resources.Load<GameObject>("Prefabs/GridFloorRed");
         player_game_object = Resources.Load<GameObject>("Prefabs/Player");
+        tank_object = Resources.Load<GameObject>("Models/Minitank");
 
         //create the board
         map = new GridBase(13, 13);
@@ -49,19 +52,14 @@ public class Controller : MonoBehaviour {
 
         turnCounter = 0;
 
-        players = new HashSet<Player>();
+        players = new Dictionary<int, Player>();
         foreach (KeyValuePair<NetworkClient, string> client in _players)
         {
             PlayerController temp_controller = client.Key.connection.playerControllers[0];
             temp_controller.gameObject.GetComponent<Player>().initialize(temp_controller.playerControllerId, client.Value, this);
-            players.Add(temp_controller.gameObject.GetComponent<Player>());
+            players.Add(temp_controller.playerControllerId, temp_controller.gameObject.GetComponent<Player>());
         }
-		//foreach(int player_id in  _players.Keys)
-		//{
-		//	GameObject player = GameObject.Instantiate(player_game_object, new Vector3(6,9,6), Quaternion.Euler(90,0,0));
-		//	player.GetComponent<Player>().initialize(player_id, _players[player_id], this);
-		//	players.Add(player.GetComponent<Player>());
-		//}
+		
     }
     	
 	// Update is called once per frame
@@ -75,6 +73,18 @@ public class Controller : MonoBehaviour {
     public void CreateUnit(Node place_to_make, int player_id, string unit_type)
     {
         //create unit for player of type unit_type at place_to_make
+        Unit newUnit;
+        GameObject Combat_unit;
+
+        if (isCombatUnit(unit_type))
+        {
+            Combat_unit = Instantiate(tank_object, new Vector3(place_to_make.x, 0, place_to_make.z), Quaternion.identity);
+            Combat_unit.gameObject.name = unit_type;        
+        }
     } 
+    private bool isCombatUnit(string input)
+    {
+        return input.Equals("tank");
+    }
 
 }
